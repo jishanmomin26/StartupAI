@@ -1,4 +1,33 @@
-# React + Vite
+# StartupAI
+
+AI-Powered Startup Idea Generator
+
+## Tech Stack
+
+- React
+- Vite
+- React Router
+- Tailwind CSS
+- Firebase
+- Gemini API integration
+
+## Setup
+
+1. Install dependencies: `npm install`
+2. Start the dev server: `npm run dev`
+
+## Structure
+
+- `src/components` - reusable UI components
+- `src/pages` - route-level pages
+- `src/services` - API and business logic
+- `src/context` - React context state
+- `src/hooks` - custom hooks
+- `src/utils` - helper functions and constants
+- `src/config` - app configuration
+- `src/styles` - global CSS files
+
+More detail will be added in later phases.# React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
