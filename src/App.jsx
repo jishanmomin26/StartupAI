@@ -1,5 +1,6 @@
 import { createBrowserRouter, Navigate, Outlet, RouterProvider } from 'react-router-dom'
 import Header from './components/common/Header.jsx'
+import Footer from './components/common/Footer.jsx'
 import AboutPage from './pages/AboutPage.jsx'
 import GeneratorPage from './pages/GeneratorPage.jsx'
 import HomePage from './pages/HomePage.jsx'
@@ -10,9 +11,10 @@ function RootLayout() {
   return (
     <div className="min-h-screen flex flex-col bg-surface text-slate-900">
       <Header />
-      <main className="flex-1">
+      <main className="flex-grow">
         <Outlet />
       </main>
+      <Footer />
     </div>
   )
 }
