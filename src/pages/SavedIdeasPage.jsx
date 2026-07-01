@@ -7,6 +7,7 @@ import ConfirmDialog from '../components/feedback/ConfirmDialog.jsx'
 import LoadingSpinner from '../components/ui/LoadingSpinner.jsx'
 import Button from '../components/ui/Button.jsx'
 import Card from '../components/ui/Card.jsx'
+import useToast from '../hooks/useToast.js'
 
 const mockIdeas = [
   {
@@ -73,6 +74,7 @@ const mockIdeas = [
 
 export default function SavedIdeasPage() {
   const navigate = useNavigate()
+  const { showToast } = useToast()
   const [ideas, setIdeas] = useState([])
   const [selectedIdea, setSelectedIdea] = useState(null)
   const [deleteConfirm, setDeleteConfirm] = useState({ open: false, ideaId: null })
@@ -92,8 +94,9 @@ export default function SavedIdeasPage() {
 
       // Phase 4: replace with firebaseService.getIdeas(sessionId)
       setIdeas(mockIdeas)
-    } catch (loadError) {
+    } catch {
       setError('Failed to load ideas. Please try again.')
+      showToast('Failed to load ideas. Please try again.', 'error', 4000)
     } finally {
       setIsLoading(false)
     }
@@ -121,9 +124,11 @@ export default function SavedIdeasPage() {
       setIdeas((currentIdeas) => currentIdeas.filter((idea) => idea.id !== deleteConfirm.ideaId))
       setSelectedIdea(null)
       setDeleteConfirm({ open: false, ideaId: null })
-    } catch (deleteError) {
+      showToast('Idea deleted successfully', 'success', 3000)
+    } catch {
       // Phase 3.5: replace with showToast('Error deleting idea', 'error')
       setError('Error deleting idea. Please try again.')
+      showToast('Error deleting idea. Please try again.', 'error', 4000)
     }
   }
 

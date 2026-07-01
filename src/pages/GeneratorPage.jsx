@@ -3,9 +3,11 @@ import Button from '../components/ui/Button.jsx'
 import IdeaDetails from '../components/idea/IdeaDetails.jsx'
 import IdeaForm from '../components/form/IdeaForm.jsx'
 import LoadingSpinner from '../components/ui/LoadingSpinner.jsx'
+import useToast from '../hooks/useToast.js'
 
 export default function GeneratorPage() {
-  const [formData, setFormData] = useState({
+  const { showToast } = useToast()
+  const [, setFormData] = useState({
     interest: '',
     skills: [],
     budget: '',
@@ -57,16 +59,16 @@ export default function GeneratorPage() {
       }
 
       setGeneratedIdea(mockIdea)
-    } catch (submitError) {
+      showToast('Startup idea generated successfully!', 'success', 3000)
+    } catch {
       setError('Failed to generate idea. Please try again.')
+      showToast('Error generating idea. Please try again.', 'error', 4000)
     } finally {
       setIsLoading(false)
     }
   }
 
-  const handleSaveIdea = async () => {
-    console.log('Saving idea:', generatedIdea)
-  }
+  const handleSaveIdea = () => {}
 
   const handleGenerateAnother = () => {
     setGeneratedIdea(null)

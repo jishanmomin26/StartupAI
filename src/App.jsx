@@ -6,6 +6,7 @@ import GeneratorPage from './pages/GeneratorPage.jsx'
 import HomePage from './pages/HomePage.jsx'
 import NotFoundPage from './pages/NotFoundPage.jsx'
 import SavedIdeasPage from './pages/SavedIdeasPage.jsx'
+import ToastProvider from './providers/ToastProvider.jsx'
 
 function RootLayout() {
   return (
@@ -53,5 +54,9 @@ const router = createBrowserRouter([
 ])
 
 export default function App() {
-  return <RouterProvider router={router} />
+  return (
+    <ToastProvider>
+      <RouterProvider router={router} />
+    </ToastProvider>
+  )
 }
