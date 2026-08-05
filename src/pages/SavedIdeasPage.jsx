@@ -7,6 +7,8 @@ import ConfirmDialog from '../components/feedback/ConfirmDialog.jsx'
 import LoadingSpinner from '../components/ui/LoadingSpinner.jsx'
 import Button from '../components/ui/Button.jsx'
 import Card from '../components/ui/Card.jsx'
+import * as firebaseService from '../services/firebaseService.js'
+import useSession from '../hooks/useSession.js'
 import useToast from '../hooks/useToast.js'
 
 const mockIdeas = [
@@ -75,6 +77,7 @@ const mockIdeas = [
 export default function SavedIdeasPage() {
   const navigate = useNavigate()
   const { showToast } = useToast()
+  const { sessionId } = useSession()
   const [ideas, setIdeas] = useState([])
   const [selectedIdea, setSelectedIdea] = useState(null)
   const [deleteConfirm, setDeleteConfirm] = useState({ open: false, ideaId: null })
@@ -82,18 +85,23 @@ export default function SavedIdeasPage() {
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    loadIdeas()
-  }, [])
+    if (sessionId) {
+      loadIdeas()
+    }
+  }, [sessionId])
 
   const loadIdeas = async () => {
     setIsLoading(true)
     setError(null)
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 400))
+      const savedIdeas = await firebaseService.getIdeas(sessionId)
 
-      // Phase 4: replace with firebaseService.getIdeas(sessionId)
-      setIdeas(mockIdeas)
+      setIdeas(savedIdeas)
+
+      if (savedIdeas.length > 0) {
+        showToast(`Loaded ${savedIdeas.length} idea(s)`, 'info', 2000)
+      }
     } catch {
       setError('Failed to load ideas. Please try again.')
       showToast('Failed to load ideas. Please try again.', 'error', 4000)
