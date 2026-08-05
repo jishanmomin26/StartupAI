@@ -3,10 +3,13 @@ import Button from '../components/ui/Button.jsx'
 import IdeaDetails from '../components/idea/IdeaDetails.jsx'
 import IdeaForm from '../components/form/IdeaForm.jsx'
 import LoadingSpinner from '../components/ui/LoadingSpinner.jsx'
+import * as firebaseService from '../services/firebaseService.js'
+import useSession from '../hooks/useSession.js'
 import useToast from '../hooks/useToast.js'
 
 export default function GeneratorPage() {
   const { showToast } = useToast()
+  const { sessionId } = useSession()
   const [, setFormData] = useState({
     interest: '',
     skills: [],
@@ -58,11 +61,13 @@ export default function GeneratorPage() {
         createdAt: new Date().toISOString(),
       }
 
+      await firebaseService.saveIdea(sessionId, mockIdea)
+
       setGeneratedIdea(mockIdea)
-      showToast('Startup idea generated successfully!', 'success', 3000)
+      showToast('Idea saved to your collection!', 'success', 3000)
     } catch {
-      setError('Failed to generate idea. Please try again.')
-      showToast('Error generating idea. Please try again.', 'error', 4000)
+      setError('Failed to generate or save idea. Please try again.')
+      showToast('Error saving idea. Please try again.', 'error', 4000)
     } finally {
       setIsLoading(false)
     }
